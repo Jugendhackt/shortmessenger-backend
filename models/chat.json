@@ -1,0 +1,17 @@
+{
+	"members": ["defaultuser", "chatbot"],
+	"filter": {
+		"minTime": 0,
+		"maxTime": 0,
+		"allowEmoji": false,
+		"allowPictures": false,
+		"allowSpeech": false
+	},
+	"messages": [
+		{
+			"sender": "chatbot",
+			"content": "Hallo Welt",
+			"time": 0
+		}
+	]
+}
