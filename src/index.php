@@ -29,12 +29,16 @@ if(!empty($_GET["username"]) && !empty($_GET["password"])){
 						# Chat ID and Message via Post!
 						if(!empty($_POST["chatId"])){
 							$chatId = $_POST["chatId"];
-							if($chat = json_decode(file_get_contents("chats/".$chatId.".json"), true) && strlen($_POST["message"]) < 120){
+							$chat = json_decode(file_get_contents("chats/".$chatId.".json"), true);
+							if(strlen($_POST["message"]) < 120){
 								$message = [
 									"content" => $_POST["message"],
 									"time" => time(),
 									"sender" => $user["username"]
 								];
+								# Save message
+								$chat["messages"][] = $message;
+								file_put_contents("chats/".$chatId.".json", json_encode($chat));
 								$output = $message;
 							} else {
 								$output["errormsg"] = "Chat error.";

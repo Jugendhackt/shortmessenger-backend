@@ -4,6 +4,7 @@
 $chat["users"] = explode(" ", getUserInput("Users"));
 $chat["name"] = getUserInput("Chat name");
 $chat["id"] = generateRandomIdentifier();
+$chat["messages"] = [];
 
 echo "Creating chat ".$chat["id"]."...\n";
 
