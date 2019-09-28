@@ -1,5 +1,7 @@
 {
-	"members": ["defaultuser", "chatbot"],
+	"id": 0,
+	"name": "Die Niklas'",
+	"users": ["defaultuser", "chatbot"],
 	"filter": {
 		"minTime": 0,
 		"maxTime": 0,
