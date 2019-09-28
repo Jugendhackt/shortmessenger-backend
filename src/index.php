@@ -52,7 +52,12 @@ if(!empty($_GET["username"]) && !empty($_GET["password"])){
 						$chats = $user["chats"];
 						$response = [];
 						foreach($chats as $chat){
-							$chatfile = json_decode(file_get_contents("chats/".$chat.".json"));
+							$chatfile = json_decode(file_get_contents("chats/".$chat.".json"), true);
+							if(!empty($chatfile["messages"])){
+								$chatfile["last"] = end($chatfile["messages"])["time"];
+							} else {
+								$chatfile["last"] = 0;
+							}
 							$response[] = $chatfile;
 						}
 						$output = $response;
