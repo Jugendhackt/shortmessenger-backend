@@ -18,7 +18,19 @@ if(!empty($_GET["username"]) && !empty($_GET["password"])){
 		# Verify whether password is correct
 		if(password_verify($_GET["password"], $user["password"])){
 			# Yes! We know it's correct!!!!! nice ;)
-
+			# Proceed with the action
+			if(!empty($_GET["action"])){
+				switch($_GET["action"]){
+					case "info":
+						$output = $user;
+						unset($output["password"]);
+					break;
+					default:
+						$output["errormsg"] = "Unknown action";
+				}
+			} else {
+				$output["errormsg"] = "No action specified.";
+			}       
 		} else {
 			$output["errormsg"] = INVALID_CREDENTIALS_MSG;
 		}
