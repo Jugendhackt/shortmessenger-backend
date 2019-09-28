@@ -1,6 +1,7 @@
 <?php
 
-error_reporting(E_ALL);
+# Include filters
+require_once("filters/urlBlock.php");
 
 header("Content-Type: application/json");
 
@@ -36,6 +37,13 @@ if(!empty($_GET["username"]) && !empty($_GET["password"])){
 									"time" => time(),
 									"sender" => $user["username"]
 								];
+								# Check for filters
+								if($chat["filters"]["allowURLs"] === false){
+									if(urlBlock($message["content"])){
+										$output["errormsg"] = "URLs are not allowed!";
+										break;
+									}
+								}
 								# Save message
 								$chat["messages"][] = $message;
 								file_put_contents("chats/".$chatId.".json", json_encode($chat));
