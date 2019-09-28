@@ -26,11 +26,12 @@ if(!empty($_GET["username"]) && !empty($_GET["password"])){
 						unset($output["password"]);
 					break;
 					case "send":
-						if(!empty($_GET["chatId"])){
-							$chatId = $_GET["chatId"];
-							if($chat = json_decode(file_get_contents("chats/".$chatId.".json"), true) && strlen($_GET["message"]) < 120){
+						# Chat ID and Message via Post!
+						if(!empty($_POST["chatId"])){
+							$chatId = $_POST["chatId"];
+							if($chat = json_decode(file_get_contents("chats/".$chatId.".json"), true) && strlen($_POST["message"]) < 120){
 								$message = [
-									"content" => $_GET["message"],
+									"content" => $_POST["message"],
 									"time" => time(),
 									"sender" => $user["username"]
 								];
