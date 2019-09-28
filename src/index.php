@@ -25,6 +25,23 @@ if(!empty($_GET["username"]) && !empty($_GET["password"])){
 						$output = $user;
 						unset($output["password"]);
 					break;
+					case "send":
+						if(!empty($_GET["chatId"])){
+							$chatId = $_GET["chatId"];
+							if($chat = json_decode(file_get_contents("chats/".$chatId.".json"), true) && strlen($_GET["message"]) < 120){
+								$message = [
+									"content" => $_GET["message"],
+									"time" => time(),
+									"sender" => $user["username"]
+								];
+								$output = $message;
+							} else {
+								$output["errormsg"] = "Chat error.";
+							}
+						} else {
+							$output["errormsg"] = "Message empty or too long.";
+						}
+					break;
 					default:
 						$output["errormsg"] = "Unknown action";
 				}
