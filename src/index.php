@@ -57,6 +57,23 @@ if(!empty($_GET["username"]) && !empty($_GET["password"])){
 						}
 						$output = $response;
 						break;
+					case 'diff':
+						$chats = $user["chats"];
+						if(!empty($_GET["timestamp"])){
+							unset($output["error"]);
+							$output["result"] = false;
+							foreach($chats as $chat){
+								$chatfile = json_decode(file_get_contents("chats/".$chat.".json"), true);
+								foreach($chatfile["messages"] as $message){
+									if($message["time"] > $_GET["timestamp"]){
+										$output["result"] = true;
+									}
+								}
+							}
+						} else {
+							$output["errormsg"] = "No timestamp supplied.";
+						}
+						break;
 					default:
 						$output["errormsg"] = "Unknown action";
 				}
