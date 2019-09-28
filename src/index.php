@@ -1,10 +1,13 @@
 <?php
 
-header("Header: application/json")
+error_reporting(E_ALL);
+
+header("Content-Type: application/json");
 
 define("INVALID_CREDENTIALS_MSG", "Invalid credentials");
 
-$output = ["error" => true];
+$output = [];
+$output["error"] = true;
 
 # Check whether useraccount exists and is valid
 if(!empty($_GET["username"]) && !empty($_GET["password"])){
