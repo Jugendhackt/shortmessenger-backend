@@ -43,6 +43,9 @@ if(!empty($_GET["username"]) && !empty($_GET["password"])){
 										$output["errormsg"] = "URLs are not allowed!";
 										break;
 									}
+								} elseif ($chat["disallowMonologue"] === true and $message["sender"] == end($chat["messages"])["sender"]) {
+									$output["errormsg"] = "You may not send multiple messages in a row.";
+									break;
 								}
 								# Save message
 								$chat["messages"][] = $message;
