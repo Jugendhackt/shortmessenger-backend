@@ -46,7 +46,17 @@ if(!empty($_GET["username"]) && !empty($_GET["password"])){
 						} else {
 							$output["errormsg"] = "Message empty or too long.";
 						}
-					break;
+
+						break;
+					case 'read':
+						$chats = $user["chats"];
+						$response = [];
+						foreach($chats as $chat){
+							$chatfile = json_decode(file_get_contents("chats/".$chat.".json"));
+							$response[] = $chatfile;
+						}
+						$output = $response;
+						break;
 					default:
 						$output["errormsg"] = "Unknown action";
 				}
