@@ -7,7 +7,8 @@ $chat["id"] = generateRandomIdentifier();
 $chats["filters"] = [
 	"allowUrls" => true,
 	"allowEmoji" => false,
-	"disallowMonologue" => false
+	"disallowMonologue" => false,
+	"timeRules" = []
 ];
 $chat["messages"] = [];
 

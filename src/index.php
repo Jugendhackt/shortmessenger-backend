@@ -3,6 +3,7 @@
 # Include filters
 require_once("filters/urlBlock.php");
 require_once("filters/emojiBlock.php");
+require_once("filters/timeBlock.php");
 
 header("Content-Type: application/json");
 
@@ -45,13 +46,22 @@ if(!empty($_GET["username"]) && !empty($_GET["password"])){
 										break;
 									}
 								} 
-								if ($chat["filters"]["disallowMonologue"] and $message["sender"] == end($chat["messages"])["sender"]) {
+								if($chat["filters"]["disallowMonologue"] and $message["sender"] == end($chat["messages"])["sender"]) {
 									$output["errormsg"] = "You may not send multiple messages in a row.";
 									break;
 								} 
-								if (!$chat["filters"]["allowEmoji"] and emojiblock($message["content"])){
+								if(!$chat["filters"]["allowEmoji"] and emojiblock($message["content"])){
 									$output["errormsg"] = "Emojis aren't allowed in this channel.";
 									break;
+								}
+								if(!empty($chat["filters"]["timeRules"])){
+									foreach($chat["filters"]["timeRules"] as $cronRule){
+										# See if we're blocked
+										if(timeblock($cronRule)){
+											$output["errormsg"] = "You may not send a message now.";
+											break 2;
+										}
+									}
 								}
 								# Save message
 								$chat["messages"][] = $message;
