@@ -2,6 +2,7 @@
 
 # Input chat data
 $chat["users"] = explode(" ", getUserInput("Users"));
+$chat["img"] = "https://privatsphaere-leipzig.org/wp-content/uploads/2016/05/jugend_hackt-300x300.png";
 $chat["name"] = getUserInput("Chat name");
 $chat["id"] = generateRandomIdentifier();
 $chats["filters"] = [
