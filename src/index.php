@@ -2,6 +2,7 @@
 
 # Include filters
 require_once("filters/urlBlock.php");
+require_once("filters/emojiBlock.php");
 
 header("Content-Type: application/json");
 
@@ -28,7 +29,7 @@ if(!empty($_GET["username"]) && !empty($_GET["password"])){
 					break;
 					case "send":
 						# Chat ID and Message via Post!
-						if(!empty($_POST["chatId"])){
+						if(!empty($_POST["chatId"]) and !empty($_POST["message"])){
 							$chatId = $_POST["chatId"];
 							$chat = json_decode(file_get_contents("chats/".$chatId.".json"), true);
 							if(strlen($_POST["message"]) < 120){
@@ -38,13 +39,18 @@ if(!empty($_GET["username"]) && !empty($_GET["password"])){
 									"sender" => $user["username"]
 								];
 								# Check for filters
-								if($chat["filters"]["allowURLs"] === false){
+								if(!$chat["filters"]["allowURLs"]){
 									if(urlBlock($message["content"])){
 										$output["errormsg"] = "URLs are not allowed!";
 										break;
 									}
-								} elseif ($chat["disallowMonologue"] === true and $message["sender"] == end($chat["messages"])["sender"]) {
+								} 
+								if ($chat["filters"]["disallowMonologue"] and $message["sender"] == end($chat["messages"])["sender"]) {
 									$output["errormsg"] = "You may not send multiple messages in a row.";
+									break;
+								} 
+								if (!$chat["filters"]["allowEmoji"] and emojiblock($message["content"])){
+									$output["errormsg"] = "Emojis aren't allowed in this channel.";
 									break;
 								}
 								# Save message
@@ -52,10 +58,10 @@ if(!empty($_GET["username"]) && !empty($_GET["password"])){
 								file_put_contents("chats/".$chatId.".json", json_encode($chat));
 								$output = $message;
 							} else {
-								$output["errormsg"] = "Chat error.";
+								$output["errormsg"] = "Your message is too long.";
 							}
 						} else {
-							$output["errormsg"] = "Message empty or too long.";
+							$output["errormsg"] = "You cannot send no message..";
 						}
 
 						break;
